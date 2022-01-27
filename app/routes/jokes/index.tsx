@@ -10,7 +10,6 @@ type Joke = {
 export const loader: LoaderFunction = async () => {
   const count = await db.joke.count();
   const randomRowNumber = Math.floor(Math.random() * count);
-  console.log(count);
   const [randomJoke] = await db.joke.findMany({
     take: 1,
     skip: randomRowNumber,
