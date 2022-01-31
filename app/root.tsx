@@ -1,4 +1,12 @@
-import { LiveReload, Outlet, Links, useCatch, MetaFunction, Meta } from "remix";
+import {
+  LiveReload,
+  Outlet,
+  Links,
+  useCatch,
+  MetaFunction,
+  Meta,
+  Scripts,
+} from "remix";
 import type { LinksFunction } from "remix";
 import globalStylesUrl from "./styles/global.css";
 import globalMediumStylesUrl from "./styles/global-medium.css";
@@ -14,6 +22,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <Scripts />
         <Outlet />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
@@ -50,6 +59,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
+  console.error(error);
   return (
     <html>
       <head>
