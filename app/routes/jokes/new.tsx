@@ -52,6 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
   });
   return redirect(`/jokes/${joke.id}`);
 };
+
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
   if (!userId) {

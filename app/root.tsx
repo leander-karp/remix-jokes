@@ -34,24 +34,37 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export const ErrorBoundary = ({ error }: { error: Error }) => (
-  <Document title="Uh-oh!">
-    <div className="error-container">
-      <h1>App Error</h1>
-      <pre>{error.message}</pre>
-    </div>
-  </Document>
-);
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Uh-oh!</title>
+      </head>
+      <body>
+        <div className="error-container">
+          <h1>App Error</h1>
+          <pre>{error.message}</pre>
+        </div>
+      </body>
+    </html>
+  );
+};
 export const CatchBoundary = () => {
   const caught = useCatch();
 
   return (
-    <Document title={`${caught.status} ${caught.statusText}`}>
-      <div className="error-container">
-        <h1>
-          {caught.status} {caught.statusText}
-        </h1>
-      </div>
-    </Document>
+    <html>
+      <head>
+        <title>{`${caught.status} ${caught.statusText}`}</title>
+      </head>
+      <body>
+        <div className="error-container">
+          <h1>
+            {caught.status} {caught.statusText}
+          </h1>
+        </div>
+      </body>
+    </html>
   );
 };

@@ -23,7 +23,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     select: { id: true, name: true },
   });
   const user = await getUser(request);
-  console.log(user);
 
   return { jokeListItems, user };
 };
