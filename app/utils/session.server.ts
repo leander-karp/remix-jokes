@@ -1,24 +1,29 @@
 import { createCookieSessionStorage, redirect } from "remix";
 import { db } from "~/utils/db.server";
-import { compare } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 
 type LoginForm = {
   username: string;
   password: string;
 };
 
-const existsUser = async (username: string) =>
+export const userExists = async (username: string) =>
   db.user.findUnique({ where: { username } });
 
 const isCorrectPassword = async (user, givenPassword: string) =>
   compare(givenPassword, user.passwordHash);
 
 export const login = async ({ username, password }: LoginForm) => {
-  const user = await existsUser(username);
+  const user = await userExists(username);
 
   if (user && (await isCorrectPassword(user, password))) {
     return user;
   } else return null;
+};
+
+export const register = async ({ username, password }: LoginForm) => {
+  const passwordHash = await hash(password, 10);
+  return db.user.create({ data: { username, passwordHash } });
 };
 
 const sessionSecret = process.env.SESSION_SECRET;

@@ -3,11 +3,15 @@ import {
   json,
   Link,
   LinksFunction,
-  redirect,
   useActionData,
   useSearchParams,
 } from "remix";
-import { createUserSession, login } from "~/utils/session.server";
+import {
+  createUserSession,
+  login,
+  register,
+  userExists,
+} from "~/utils/session.server";
 import stylesUrl from "../styles/login.css";
 
 type LoginData = {
@@ -29,12 +33,6 @@ const validateUsername = (name: string) =>
   name.length < 3 ? "Username is too short" : undefined;
 const validatePassword = (password: string) =>
   password.length < 6 ? "Password is too short" : undefined;
-
-const handleRegister = (
-  name: string,
-  password: string,
-  redirectTo: string
-) => {};
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
@@ -71,9 +69,22 @@ export const action: ActionFunction = async ({ request }) => {
       });
     }
     return createUserSession(user.id, redirectTo);
-  } else if (loginType == "register")
-    return handleRegister(username, password, redirectTo);
-  else
+  } else if (loginType == "register") {
+    if (await userExists(username)) {
+      return badRequest({
+        formError: `User with username ${username} already exists`,
+      });
+    }
+
+    const user = await register({ username, password });
+
+    if (!user) {
+      return badRequest({
+        formError: `Something went wrong trying to create a new user.`,
+      });
+    }
+    return createUserSession(user.id, redirectTo);
+  } else
     return badRequest({
       formError: "Invalid form provided",
     });
