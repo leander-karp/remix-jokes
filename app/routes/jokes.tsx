@@ -5,6 +5,7 @@ import {
   useLoaderData,
   LinksFunction,
   LoaderFunction,
+  Form,
 } from "remix";
 import { db } from "~/utils/db.server";
 import { getUser } from "~/utils/session.server";
@@ -42,11 +43,11 @@ const JokesRoute = () => {
           {data.user ? (
             <div className="user-info">
               <span>{`Hi ${data.user.username}`}</span>
-              <form action="/logout" method="post">
+              <Form action="/logout" method="post">
                 <button type="submit" className="button">
                   Logout
                 </button>
-              </form>
+              </Form>
             </div>
           ) : (
             <Link to="/login">Login</Link>

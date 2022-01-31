@@ -1,5 +1,6 @@
 import {
   ActionFunction,
+  Form,
   json,
   Link,
   LinksFunction,
@@ -108,7 +109,7 @@ const Login = () => {
   return (
     <div className="container">
       <h1>Login</h1>
-      <form
+      <Form
         method="post"
         className="content"
         aria-describedby={
@@ -202,7 +203,7 @@ const Login = () => {
         <button type="submit" className="button">
           Submit
         </button>
-      </form>
+      </Form>
       <div className="links">
         <ul>
           <li>

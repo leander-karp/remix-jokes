@@ -7,6 +7,7 @@ import {
   ActionFunction,
   redirect,
   MetaFunction,
+  Form,
 } from "remix";
 import { db } from "~/utils/db.server";
 import { getUserId, requireUserId } from "~/utils/session.server";
@@ -81,12 +82,12 @@ const JokeId = () => {
       <p>{data.joke.content}</p>
       <Link to=".">{data.joke.name} Permalink</Link>
       {data.isOwner && (
-        <form method="post">
+        <Form method="post">
           <input type="hidden" name="_method" value="delete" />
           <button type="submit" className="button">
             Delete
           </button>
-        </form>
+        </Form>
       )}
     </div>
   );
