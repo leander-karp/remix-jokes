@@ -3,6 +3,7 @@ import {
   json,
   Link,
   LinksFunction,
+  MetaFunction,
   useActionData,
   useSearchParams,
 } from "remix";
@@ -28,11 +29,17 @@ type LoginData = {
 };
 
 const badRequest = (data: LoginData) => json(data, { status: 401 });
-
 const validateUsername = (name: string) =>
   name.length < 3 ? "Username is too short" : undefined;
 const validatePassword = (password: string) =>
   password.length < 6 ? "Password is too short" : undefined;
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Remix Jokes | Login",
+    description: "Login to submit your own jokes to Remix Jokes!",
+  };
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
