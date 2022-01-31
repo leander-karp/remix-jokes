@@ -1,4 +1,4 @@
-import { LiveReload, Outlet, Links } from "remix";
+import { LiveReload, Outlet, Links, useCatch } from "remix";
 import type { LinksFunction } from "remix";
 import globalStylesUrl from "./styles/global.css";
 import globalMediumStylesUrl from "./styles/global-medium.css";
@@ -33,3 +33,25 @@ export const links: LinksFunction = () => [
     media: "screen and (min-width: 1024px)",
   },
 ];
+
+export const ErrorBoundary = ({ error }: { error: Error }) => (
+  <Document title="Uh-oh!">
+    <div className="error-container">
+      <h1>App Error</h1>
+      <pre>{error.message}</pre>
+    </div>
+  </Document>
+);
+export const CatchBoundary = () => {
+  const caught = useCatch();
+
+  return (
+    <Document title={`${caught.status} ${caught.statusText}`}>
+      <div className="error-container">
+        <h1>
+          {caught.status} {caught.statusText}
+        </h1>
+      </div>
+    </Document>
+  );
+};
