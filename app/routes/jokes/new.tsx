@@ -1,6 +1,7 @@
 import { ActionFunction, json, useActionData } from "remix";
 import { redirect } from "remix";
 import { db } from "~/utils/db.server";
+import { requireUserId } from "~/utils/session.server";
 
 const validateJokeName = (name: string) =>
   name.length < 3 ? "The name is too short" : undefined;
@@ -22,8 +23,7 @@ type ActionData = {
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 
 export const action: ActionFunction = async ({ request }) => {
-  const minimum_name_length = 3;
-  const minimum_constent_length = 10;
+  const userId = await requireUserId(request);
   const body = await request.formData();
   const name = body.get("name");
   const content = body.get("content");
@@ -41,7 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
     return badRequest({ fieldErrors, fields });
 
   const joke = await db.joke.create({
-    data: fields,
+    data: { ...fields, jokesterId: userId },
   });
   return redirect(`/jokes/${joke.id}`);
 };
