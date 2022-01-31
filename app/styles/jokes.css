@@ -1,3 +1,13 @@
+.joke-action-menue {
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 1rem;
+}
+
+.joke-action-menue-item {
+  max-width: max-content;
+}
+
 .jokes-layout {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,4 @@
 import {
-  Link,
   useLoaderData,
   LoaderFunction,
   useParams,
@@ -7,7 +6,6 @@ import {
   ActionFunction,
   redirect,
   MetaFunction,
-  Form,
 } from "remix";
 import { db } from "~/utils/db.server";
 import { JokeDisplay } from "~/components/joke";
@@ -56,7 +54,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   const form = await request.formData();
   if (form.get("_method") === "delete") {
     const userId = await requireUserId(request);
-    console.log("userID", userId);
     const joke = await db.joke.findUnique({
       where: { id: params.jokeId },
     });
@@ -72,6 +69,11 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
     await db.joke.delete({ where: { id: params.jokeId } });
     return redirect("/jokes");
+  } else if (form.get("_method") === "edit") {
+    const joke = await db.joke.findUnique({
+      where: { id: params.jokeId },
+    });
+    return redirect(`/jokes/edit/${joke.id}`);
   }
 };
 
